@@ -1,0 +1,141 @@
+{% extends 'complaints/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row gy-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-1">{{ complaint.title }}</h4>
+                    <small class="text-muted">Submitted by {{ complaint.display_user }} on {{ complaint.created_at|date:'d M Y, H:i' }}</small>
+                </div>
+                <span class="badge {% if complaint.priority == 'Emergency' %}bg-danger{% elif complaint.priority == 'High' %}bg-warning text-dark{% else %}bg-info{% endif %}">
+                    {{ complaint.priority }}
+                </span>
+            </div>
+            <div class="card-body">
+                {% if complaint.priority == 'Emergency' %}
+                    <div class="alert alert-danger">
+                        <strong>Emergency complaint:</strong> this issue should be handled immediately.
+                    </div>
+                {% endif %}
+                <p class="mb-2"><strong>Category:</strong> {{ complaint.category }}</p>
+                <p class="mb-2"><strong>Location:</strong> {{ complaint.location|default:'Not specified' }}</p>
+                <p class="mb-2"><strong>Status:</strong> <span class="badge bg-secondary">{{ complaint.status }}</span></p>
+                <p class="mb-2"><strong>Complaint ID:</strong> #{{ complaint.id }}</p>
+                <p class="mb-3">{{ complaint.description }}</p>
+
+                {% if complaint.image %}
+                <div class="mb-3">
+                    <img src="{{ complaint.image.url }}" alt="Complaint image" class="img-fluid rounded">
+                </div>
+                {% endif %}
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Back</a>
+                    {% if complaint.status == 'Resolved' and user == complaint.user %}
+                    <form method="post" action="{% url 'reopen_complaint' complaint.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning">Reopen Complaint</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Activity Timeline</h5>
+            </div>
+            <div class="card-body">
+                {% if complaint.comments.exists %}
+                    {% for comment in complaint.comments.all %}
+                        <div class="border-bottom py-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-semibold">
+                                    {% if comment.admin %}
+                                        {{ comment.admin.username }}
+                                    {% else %}
+                                        System
+                                    {% endif %}
+                                </span>
+                                <small class="text-muted">{{ comment.created_at|date:'d M Y H:i' }}</small>
+                            </div>
+                            <p class="mb-0">{{ comment.message }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No updates have been added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        {% if user.is_staff %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Admin Controls</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'update_status' complaint.pk %}" class="mb-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_status" class="form-label">Status</label>
+                        <select name="status" id="id_status" class="form-select">
+                            {% for choice in status_choices %}
+                                <option value="{{ choice.0 }}" {% if complaint.status == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_assigned_to" class="form-label">Assign To</label>
+                        <select name="assigned_to" id="id_assigned_to" class="form-select">
+                            <option value="">Unassigned</option>
+                            {% for staff_member in staff_users %}
+                                <option value="{{ staff_member.pk }}" {% if complaint.assigned_to_id == staff_member.pk %}selected{% endif %}>
+                                    {{ staff_member.username }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary w-100">Save Status</button>
+                </form>
+
+                <form method="post" action="{% url 'delete_complaint' complaint.pk %}" onsubmit="return confirm('Delete this complaint permanently?');" class="mb-4">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger w-100">Delete Complaint</button>
+                </form>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ comment_form|crispy }}
+                    <button type="submit" class="btn btn-primary mt-3">Post Update</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Latest Info</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>Assigned to:</strong>
+                    {% if complaint.assigned_to %}
+                        {{ complaint.assigned_to.username }}
+                    {% else %}
+                        Unassigned
+                    {% endif %}
+                </p>
+                <p class="mb-2"><strong>Created:</strong> {{ complaint.created_at|date:'d M Y H:i' }}</p>
+                <p class="mb-0"><strong>Updated:</strong> {{ complaint.updated_at|date:'d M Y H:i' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

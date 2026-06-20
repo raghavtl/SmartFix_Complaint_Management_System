@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}SmartFix Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'complaints/admin_custom.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="smartfix-brand">
+  <h1 id="site-name">
+    <a href="{% url 'admin:index' %}">SmartFix Administration</a>
+  </h1>
+  <p class="smartfix-subtitle">Manage users, complaints, comments, and notifications</p>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

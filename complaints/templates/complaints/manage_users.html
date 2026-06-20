@@ -1,0 +1,82 @@
+{% extends 'complaints/base.html' %}
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">User Management</h2>
+        <p class="text-muted mb-0">Review reporters, staff assignment load, and account details.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'reports' %}" class="btn btn-outline-primary">Reports</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Dashboard</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <small class="text-uppercase text-muted">Total Users</small>
+            <h3 class="fw-bold">{{ total_users }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <small class="text-uppercase text-muted">Staff Accounts</small>
+            <h3 class="fw-bold">{{ staff_count }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <small class="text-uppercase text-muted">Active Reporters</small>
+            <h3 class="fw-bold">{{ active_reporters }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-center mb-3">
+            <div class="col-md-10">
+                <input type="search" name="q" class="form-control" placeholder="Search by username or email" value="{{ query }}">
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Complaints Raised</th>
+                        <th>Assigned Complaints</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for managed_user in managed_users %}
+                        <tr>
+                            <td>{{ managed_user.username }}</td>
+                            <td>{{ managed_user.email|default:'N/A' }}</td>
+                            <td>
+                                {% if managed_user.is_staff %}
+                                    <span class="badge bg-dark">Admin/Staff</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">User</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ managed_user.complaint_count }}</td>
+                            <td>{{ managed_user.assigned_count }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">No users found for this search.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

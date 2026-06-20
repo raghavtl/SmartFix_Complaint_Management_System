@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFix | Complaint System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+            --text: #0f172a;
+            --muted: #475569;
+        }
+        [data-theme='dark'] {
+            --primary: #60a5fa;
+            --secondary: #94a3b8;
+            --surface: #0f172a;
+            --surface-2: #1e293b;
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+        }
+        body {
+            background-color: var(--surface-2);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar, .card {
+            background: var(--surface);
+        }
+        .sidebar {
+            background: var(--surface-2);
+        }
+        .nav-link {
+            color: var(--muted);
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--text);
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+        }
+        .card-stats {
+            border-left: 5px solid var(--primary);
+        }
+        .dark-mode-toggle {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    {% include 'complaints/navbar.html' %}
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const profileTheme = "{% if user.is_authenticated and user.profile.dark_mode %}dark{% else %}light{% endif %}";
+        const currentTheme = localStorage.getItem('theme') || profileTheme;
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const nextTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('theme', nextTheme);
+            });
+        }
+    </script>
+</body>
+</html>
