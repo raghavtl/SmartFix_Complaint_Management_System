@@ -3,7 +3,6 @@
 A Django-based complaint management system for tracking, managing, and resolving complaints efficiently.
 
 ## Quick Start
-## Quick Start
 
 ### 1. Create Virtual Environment
 
