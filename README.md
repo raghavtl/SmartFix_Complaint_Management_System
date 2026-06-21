@@ -2,93 +2,184 @@
 
 A Django-based complaint management system for tracking, managing, and resolving complaints efficiently.
 
-#Quick Start
+---
 
-1. Clone Repository
+## Quick Start
+
+### 1. Clone Repository
+
+```bash
 git clone <repository-url>
 cd SmartFix_Complaint_Management_System
-2. Create Virtual Environment
+```
+
+### 2. Create Virtual Environment
+
+```bash
 python -m venv env
-3. Activate Virtual Environment
+```
 
-Windows:
+### 3. Activate Virtual Environment
 
+**Windows**
+
+```bash
 env\Scripts\activate
+```
 
-Linux/macOS:
+**Linux/macOS**
 
+```bash
 source env/bin/activate
-4. Install Dependencies
+```
+
+### 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-5. Run Migrations
+```
+
+### 5. Run Database Migrations
+
+```bash
 python manage.py migrate
-6. Create Admin User
+```
+
+### 6. Create Admin User (Optional)
+
+```bash
 python manage.py createsuperuser
-7. Run Server
+```
+
+### 7. Start the Server
+
+```bash
 python manage.py runserver
-8. Open Application
+```
+
+### 8. Access the Application
+
+**Application URL**
+
+```text
 http://127.0.0.1:8000/
+```
 
-Admin Panel:
+**Admin Panel**
 
+```text
 http://127.0.0.1:8000/admin/
 ```
 
+---
 
 ## Features
 
-- User registration and authentication
-- Complaint creation and tracking
-- Admin dashboard with analytics
-- User profile management
-- Notifications system
-- Reports and CSV export
+* User Registration and Authentication
+* Complaint Creation and Tracking
+* Complaint Status Management
+* Admin Dashboard with Analytics
+* User Profile Management
+* Notifications System
+* Reports and CSV Export
+* Image Upload Support
+* Responsive User Interface
+
+---
 
 ## Admin Access
 
-Create admin user:
+Create an admin user:
+
 ```bash
 python manage.py createsuperuser
 ```
 
-Access admin panel: **http://127.0.0.1:8000/admin/**
+Access the admin panel:
+
+```text
+http://127.0.0.1:8000/admin/
+```
+
+---
 
 ## Project Structure
 
-```
-complaint_project/
-├── complaints/          # Main Django app
-├── config/              # Django settings
+```text
+SmartFix_Complaint_Management_System/
+│
+├── complaints/          # Main Django application
+├── config/              # Django project configuration
 ├── templates/           # HTML templates
-├── media/               # User uploads
-├── env/                 # Virtual environment
-├── manage.py            # Django management
-├── requirements.txt     # Dependencies
-└── db.sqlite3          # Database
+├── static/              # CSS, JavaScript, Images
+├── media/               # User uploaded files
+├── manage.py            # Django management script
+├── requirements.txt     # Project dependencies
+├── README.md            # Project documentation
+└── db.sqlite3           # SQLite database (generated automatically)
 ```
+
+---
 
 ## Common Commands
 
+### Install Dependencies
+
 ```bash
-# Install dependencies
 pip install -r requirements.txt
+```
 
-# Run migrations
+### Run Migrations
+
+```bash
 python manage.py migrate
+```
 
-# Check for errors
+### Check Project for Errors
+
+```bash
 python manage.py check
+```
 
-# Django shell
+### Open Django Shell
+
+```bash
 python manage.py shell
+```
 
-# Create superuser
+### Create Superuser
+
+```bash
 python manage.py createsuperuser
+```
 
-# Collect static files (production)
+### Collect Static Files (Production)
+
+```bash
 python manage.py collectstatic
 ```
 
-## Status
+---
 
-✅ Zero errors - Fully functional and ready to run on any system
+## Requirements
+
+* Python 3.10+
+* Django 5.2+
+* Dependencies listed in `requirements.txt`
+
+---
+
+## Notes
+
+The following files and folders should **not** be uploaded to GitHub:
+
+```text
+env/
+__pycache__/
+*.pyc
+db.sqlite3
+.vscode/
+```
+These files are automatically recreated when the setup steps above are followed.
+
+
