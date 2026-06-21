@@ -65,8 +65,6 @@ INSTALLED_APPS = [
     'complaints', 
     
     # Third Party Apps
-    'crispy_forms',
-    'crispy_bootstrap5',
 ]
 
 # Crispy Forms Config
