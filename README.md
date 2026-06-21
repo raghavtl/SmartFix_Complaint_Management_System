@@ -4,7 +4,7 @@ A Django-based complaint management system for tracking, managing, and resolving
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/SmartFix_Complaint_Management_System.git
+git clone https://github.com/raghavtl/SmartFix_Complaint_Management_System.git
 ```
 
 ### Move to Project Directory
