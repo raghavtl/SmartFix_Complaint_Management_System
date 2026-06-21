@@ -1,31 +1,53 @@
 # SmartFix Complaint Management System
 
 A Django-based complaint management system for tracking, managing, and resolving complaints efficiently.
+### Clone Repository
 
+```bash
+git clone https://github.com/yourusername/SmartFix_Complaint_Management_System.git
+```
 
-git clone <repository-url>
+### Move to Project Directory
 
+```bash
 cd SmartFix_Complaint_Management_System
+```
 
+### Create Virtual Environment
+
+```bash
 python -m venv env
+```
 
+### Activate Virtual Environment
+
+```bash
 env\Scripts\activate
+```
 
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+### Run Migrations
+
+```bash
 python manage.py migrate
+```
 
+### Create Admin User
+
+```bash
 python manage.py createsuperuser
+```
 
+### Run Server
+
+```bash
 python manage.py runserver
-
-If all commands execute successfully, the application will be available at:
-
-http://127.0.0.1:8000/
-
-Admin Panel:
-
-http://127.0.0.1:8000/admin/
+```
 
 ## Features
 
